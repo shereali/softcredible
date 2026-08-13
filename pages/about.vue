@@ -50,6 +50,22 @@
       </Container>
     </section>
 
+    <!-- Process (folded into About) -->
+    <section id="process" class="w-full bg-surface border-y border-border section scroll-mt-24">
+      <Container>
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <h2 class="text-h2 mb-4">Our Process</h2>
+          <p class="text-body-lg text-ink-soft">From first conversation to a live, maintainable product.</p>
+        </div>
+        <ProcessSteps :items="processSteps" />
+        <div class="text-center mt-12">
+          <Button variant="primary" size="lg" to="/book-a-call">
+            Start a Conversation
+          </Button>
+        </div>
+      </Container>
+    </section>
+
     <!-- CTA -->
     <CtaSection
       title="Let's Build Something Together"
@@ -77,6 +93,16 @@ const values = [
   { title: 'Transparent process', description: 'You always know what is being built, what comes next, and why.' },
   { title: 'Long-term thinking', description: 'We build systems that can evolve with your business, not just for today.' },
   { title: 'Post-launch support', description: 'The relationship does not end at launch. We stay available for improvement and support.' }
+]
+
+const processSteps = [
+  { id: 'discover', title: 'Discover', description: 'Understand your business, users, workflows, and goals.' },
+  { id: 'define', title: 'Define', description: 'Translate requirements into a clear technical and product roadmap.' },
+  { id: 'design', title: 'Design', description: 'Create intuitive interfaces and scalable product architecture.' },
+  { id: 'build', title: 'Build', description: 'Develop the application using modern engineering practices.' },
+  { id: 'test', title: 'Test', description: 'Validate functionality, performance, security, and usability.' },
+  { id: 'launch', title: 'Launch', description: 'Deploy the product and monitor the production environment.' },
+  { id: 'grow', title: 'Grow', description: 'Improve, optimize, automate, and add new capabilities over time.' }
 ]
 
 useSeo().setMeta({

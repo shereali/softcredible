@@ -15,7 +15,7 @@ export interface LeadPayload {
   timeline?: string
   message?: string
   source: string
-  type: 'assessment' | 'contact' | 'booking' | 'partnership' | 'resource' | 'estimate'
+  type: 'assessment' | 'contact' | 'booking' | 'partnership' | 'resource' | 'estimate' | 'store'
   tracking?: LeadTracking
 }
 

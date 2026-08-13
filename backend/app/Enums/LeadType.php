@@ -12,6 +12,7 @@ namespace App\Enums;
  * - partnership → /solutions/development-partnership form
  * - resource    → /resources/[slug] download form
  * - estimate    → /estimate project estimate form
+ * - store       → /store digital product order
  */
 enum LeadType: string
 {
@@ -21,6 +22,7 @@ enum LeadType: string
     case Partnership = 'partnership';
     case Resource = 'resource';
     case Estimate = 'estimate';
+    case Store = 'store';
 
     /**
      * Human-readable label used in notifications and admin views.
@@ -34,6 +36,7 @@ enum LeadType: string
             self::Partnership => 'Development Partnership',
             self::Resource => 'Resource Download',
             self::Estimate => 'Project Estimate',
+            self::Store => 'Store Order',
         };
     }
 

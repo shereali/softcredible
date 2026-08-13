@@ -13,7 +13,7 @@
 
         <!-- Desktop nav -->
         <nav class="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-          <!-- Solutions mega-menu -->
+          <!-- Solutions mega-menu (includes Industries as a sub-tab) -->
           <div class="relative" @mouseenter="openMenu = 'solutions'" @mouseleave="openMenu = null">
             <NuxtLink
               to="/solutions"
@@ -34,7 +34,7 @@
               leave-from="opacity-100 translate-y-0"
               leave-to="opacity-0 translate-y-1"
             >
-              <div v-if="openMenu === 'solutions'" class="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[640px]">
+              <div v-if="openMenu === 'solutions'" class="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[680px]">
                 <div class="rounded-xl border border-border bg-surface shadow-xl overflow-hidden">
                   <div class="grid grid-cols-2 gap-1 p-3">
                     <NuxtLink
@@ -55,6 +55,28 @@
                       </div>
                     </NuxtLink>
                   </div>
+                  <!-- Industries folded into Solutions as a sub-tab -->
+                  <div class="border-t border-border px-4 py-3">
+                    <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">By industry</p>
+                    <div class="flex flex-wrap gap-1.5">
+                      <NuxtLink
+                        v-for="ind in navIndustries"
+                        :key="ind.slug"
+                        :to="`/industries/${ind.slug}`"
+                        class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-ink-soft hover:text-ink hover:border-accent/40 transition-colors"
+                        @click="openMenu = null"
+                      >
+                        {{ ind.name }}
+                      </NuxtLink>
+                      <NuxtLink
+                        to="/industries"
+                        class="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium text-accent hover:underline"
+                        @click="openMenu = null"
+                      >
+                        All industries →
+                      </NuxtLink>
+                    </div>
+                  </div>
                   <div class="border-t border-border bg-surface-2/60 px-4 py-3 flex items-center justify-between">
                     <NuxtLink to="/solutions/development-partnership" class="text-sm font-medium text-accent hover:underline" @click="openMenu = null">
                       For Agencies →
@@ -63,43 +85,6 @@
                       View all solutions →
                     </NuxtLink>
                   </div>
-                </div>
-              </div>
-            </Transition>
-          </div>
-
-          <!-- Industries dropdown -->
-          <div class="relative" @mouseenter="openMenu = 'industries'" @mouseleave="openMenu = null">
-            <NuxtLink
-              to="/industries"
-              class="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-              :class="isActive('/industries') ? 'text-ink bg-surface-2' : 'text-ink-soft hover:text-ink hover:bg-surface-2'"
-              @click="openMenu = openMenu === 'industries' ? null : 'industries'"
-            >
-              Industries
-              <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="{ 'rotate-180': openMenu === 'industries' }" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </NuxtLink>
-            <Transition
-              enter="transition-all duration-200 ease-out"
-              enter-from="opacity-0 translate-y-1"
-              enter-to="opacity-100 translate-y-0"
-              leave="transition-all duration-150 ease-in"
-              leave-from="opacity-100 translate-y-0"
-              leave-to="opacity-0 translate-y-1"
-            >
-              <div v-if="openMenu === 'industries'" class="absolute left-0 top-full pt-3 w-56">
-                <div class="rounded-xl border border-border bg-surface shadow-xl overflow-hidden p-2">
-                  <NuxtLink
-                    v-for="ind in navIndustries"
-                    :key="ind.slug"
-                    :to="`/industries/${ind.slug}`"
-                    class="block rounded-lg px-3 py-2 text-sm text-ink-soft hover:text-ink hover:bg-surface-2 transition-colors"
-                    @click="openMenu = null"
-                  >
-                    {{ ind.name }}
-                  </NuxtLink>
                 </div>
               </div>
             </Transition>
@@ -183,10 +168,10 @@
             </NuxtLink>
             <NuxtLink
               to="/industries"
-              class="block px-3 py-2.5 rounded-lg text-base font-medium text-ink-soft hover:text-ink hover:bg-surface-2 transition-colors"
+              class="block pl-6 pr-3 py-2 text-sm text-muted hover:text-ink transition-colors"
               @click="mobileMenuOpen = false"
             >
-              Industries
+              By industry
             </NuxtLink>
             <NuxtLink
               v-for="item in plainNavItems"
@@ -196,6 +181,13 @@
               @click="mobileMenuOpen = false"
             >
               {{ item.label }}
+            </NuxtLink>
+            <NuxtLink
+              to="/about#process"
+              class="block px-3 py-2.5 rounded-lg text-base font-medium text-ink-soft hover:text-ink hover:bg-surface-2 transition-colors"
+              @click="mobileMenuOpen = false"
+            >
+              Process
             </NuxtLink>
             <div class="pt-4 mt-2 border-t border-border space-y-2">
               <NuxtLink
@@ -231,7 +223,7 @@ const mobileMenuRef = ref<HTMLElement | null>(null)
 const openMenu = ref<string | null>(null)
 const scrolled = ref(false)
 
-const navIndustries = industries.slice(0, 6)
+const navIndustries = industries.slice(0, 5)
 
 const megaSolutions = solutions
   .filter(s => s.slug !== 'development-partnership')
@@ -246,9 +238,9 @@ const megaSolutions = solutions
 const mobileSolutions = megaSolutions.slice(0, 5)
 
 const plainNavItems = [
-  { label: 'Case Studies', href: '/case-studies' },
-  { label: 'Process', href: '/process' },
-  { label: 'Resources', href: '/resources' },
+  { label: 'Work', href: '/case-studies' },
+  { label: 'Store', href: '/store' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' }
 ]
 

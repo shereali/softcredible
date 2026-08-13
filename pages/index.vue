@@ -480,6 +480,81 @@
       </Container>
     </section>
 
+    <!-- Lead magnet: low-commitment entry point -->
+    <section class="w-full bg-background section overflow-hidden">
+      <Container>
+        <div class="max-w-4xl mx-auto bg-surface border border-border rounded-2xl p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <p class="text-caption font-medium text-accent uppercase tracking-wider mb-3">Not ready to book a call?</p>
+            <h2 class="text-h2 mb-4">
+              Start With the Free Automation Checklist
+            </h2>
+            <p class="text-body-lg text-ink-soft mb-6">
+              25 questions to find where your business loses time to manual processes. Download it, work through it, and see the opportunities for yourself.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+                </svg>
+                Free download
+              </span>
+              <span class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+                </svg>
+                25 questions
+              </span>
+              <span class="inline-flex items-center gap-2 text-sm text-ink-soft">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+                </svg>
+                No sales pitch
+              </span>
+            </div>
+            <div class="mt-8">
+              <Button variant="primary" size="lg" to="/resources/business-automation-opportunity-checklist">
+                Get the Free Checklist
+              </Button>
+            </div>
+          </div>
+          <div class="hidden lg:block">
+            <div class="bg-background border border-border rounded-xl p-6">
+              <p class="text-caption font-medium text-muted uppercase tracking-wider mb-4">Sample questions</p>
+              <ul class="space-y-3">
+                <li v-for="q in sampleChecklistQuestions" :key="q" class="flex items-start gap-2 text-sm text-ink-soft">
+                  <svg class="w-4 h-4 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {{ q }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- FAQ (condensed) -->
+    <section class="w-full bg-surface border-y border-border section">
+      <Container>
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <h2 class="text-h2 mb-4">
+            Questions Clients Ask Before Starting
+          </h2>
+          <p class="text-body-lg text-ink-soft">
+            Honest answers to the objections that usually decide the first call.
+          </p>
+        </div>
+        <FaqSection :items="homeFaqs" />
+        <div class="text-center mt-10">
+          <Button variant="ghost" size="md" to="/faq">
+            See all FAQs
+          </Button>
+        </div>
+      </Container>
+    </section>
+
     <!-- Final CTA -->
     <section class="w-full bg-background section">
       <Container>
@@ -506,6 +581,18 @@
 
 <script setup lang="ts">
 import { caseStudies } from '~/data/caseStudies'
+import { featuredFaqs } from '~/data/faqs'
+
+// Homepage FAQ: the top objections, condensed. Full list on /faq.
+const homeFaqs = featuredFaqs
+
+// Lead magnet teaser: sample questions from the checklist.
+const sampleChecklistQuestions = [
+  'Do you re-enter the same data into more than one system?',
+  'Do you copy information between spreadsheets by hand?',
+  'Do you manually prepare the same report every week?',
+  'Do you follow up on tasks and approvals by chasing people?'
+]
 
 // Hero proof-of-work: the three featured client projects.
 const heroCaseStudies = caseStudies

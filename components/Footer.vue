@@ -98,7 +98,10 @@ const footerColumns = [
     title: 'Company',
     links: [
       { label: 'About', href: '/about' },
-      { label: 'Process', href: '/process' },
+      { label: 'Process', href: '/about#process' },
+      { label: 'Work', href: '/case-studies' },
+      { label: 'Store', href: '/store' },
+      { label: 'Pricing', href: '/pricing' },
       { label: 'Contact', href: '/contact' },
     ]
   }
