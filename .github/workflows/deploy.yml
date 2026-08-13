@@ -41,7 +41,7 @@ jobs:
               -o StrictHostKeyChecking=accept-new \
               -o ConnectTimeout=20 \
               "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-              "rm -f /var/log/softcredible/deploy.done; nohup bash /opt/deploy/softcredible/deploy/deploy.sh >/dev/null 2>&1 & echo 'deploy started'"
+              "rm -f /var/log/softcredible/deploy.done; nohup bash /opt/deploy/softcredible/deploy/deploy.sh </dev/null >/dev/null 2>&1 & echo 'deploy started'"
 
       - name: Wait for deploy to finish
         run: |
