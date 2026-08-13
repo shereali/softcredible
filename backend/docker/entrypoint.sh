@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+# The storage volume is mounted fresh and owned by root; ensure the PHP-FPM
+# user (www-data) can write logs, sessions, and caches.
+chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
+chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+
 # Wait for the database to be ready before migrating.
 # Uses PHP's PDO to avoid needing netcat in the slim image.
 if [ "$DB_CONNECTION" = "mysql" ]; then
