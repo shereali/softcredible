@@ -40,6 +40,8 @@ jobs:
           ssh -i ~/.ssh/id_ed25519 \
               -o StrictHostKeyChecking=accept-new \
               -o ConnectTimeout=20 \
+              -o BatchMode=yes \
+              -o LogLevel=ERROR \
               "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
               "rm -f /var/log/softcredible/deploy.done; setsid nohup bash /opt/deploy/softcredible/deploy/deploy.sh </dev/null >/dev/null 2>&1 & echo started; exit 0"
 
