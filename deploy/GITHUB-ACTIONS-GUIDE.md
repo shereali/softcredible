@@ -49,26 +49,22 @@ root
 ```
 
 ### 3. `VPS_SSH_KEY`
-The **private key** that GitHub Actions uses to log in. A dedicated deploy key
-was generated on the server at `/root/.ssh/github_actions` (its public half is
-already in `/root/.ssh/authorized_keys`).
+The **private key as a single-line base64 blob** that GitHub Actions uses to
+log in. A dedicated deploy key was generated on the server at
+`/root/.ssh/github_actions` (its public half is already in
+`/root/.ssh/authorized_keys`).
 
-**Retrieve the private key** (run on your machine, or any machine with SSH
-access to the server):
-
+**Generate the base64 value** (from the server, or via SSH):
 ```bash
-# Local (Linux/macOS) — print to terminal:
-ssh root@217.216.110.233 "cat /root/.ssh/github_actions"
-
-# Local — save to a local file:
-scp root@217.216.110.233:/root/.ssh/github_actions ~/github_actions
-scp root@217.216.110.233:/root/.ssh/github_actions .   # Windows cmd
-
-# On the server itself:
-cat /root/.ssh/github_actions
+ssh root@217.216.110.233 "base64 -w0 /root/.ssh/github_actions"
 ```
+Paste the **entire single line of output** (no line breaks, no spaces) into the
+`VPS_SSH_KEY` secret value.
 
-Then paste the **entire file contents** (starting with `-----BEGIN OPENSSH PRIVATE KEY-----`) into the `VPS_SSH_KEY` secret value.
+> **Why base64?** Multi-line OpenSSH keys get mangled when interpolated into
+> GitHub Actions steps (`id_ed25519 is not a key file`). A single-line base64
+> blob survives; the workflow decodes it with `base64 -d` and strips any stray
+> whitespace before decoding (immune to paste artifacts).
 
 > **Security notes**
 > - This key can log in as root — keep it secret, never commit it, and add it
