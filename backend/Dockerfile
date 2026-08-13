@@ -5,7 +5,11 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Composer deps stage ─────────────────────────────────────────────────────
-FROM composer:2 AS vendor
+# Use PHP 8.2 CLI (same minor as the runtime image) so Composer resolves
+# dependencies against the PHP version that will actually run them.
+FROM php:8.2-cli-alpine AS vendor
+RUN apk add --no-cache curl git unzip \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 WORKDIR /app
 COPY composer.json composer.lock ./
 # --no-dev: production deps only. Autoloader is generated here (optimized).
