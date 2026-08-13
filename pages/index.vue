@@ -32,6 +32,10 @@
               </svg>
               No obligation. Response within one business day.
             </p>
+            <p class="text-xs text-muted mt-3 flex items-center gap-1.5">
+              <span class="w-1 h-1 rounded-full bg-accent" aria-hidden="true"></span>
+              Custom Software · SaaS · Business Automation · Long-Term Engineering
+            </p>
 
             <!-- Proof of work -->
             <div class="mt-10 pt-8 border-t border-border">
@@ -109,7 +113,7 @@
               Built for Businesses That Take Technology Seriously.
             </p>
             <p class="text-sm text-muted">
-              The tools we ship with, every project.
+              Technology we work with, on every project.
             </p>
           </div>
           <div class="lg:col-span-8">
