@@ -8,7 +8,8 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --optimize-autoloader
+# --no-dev: production deps only. Autoloader is generated here (optimized).
+RUN composer install --no-dev --no-scripts --optimize-autoloader
 
 # ── Runtime stage ────────────────────────────────────────────────────────────
 FROM php:8.2-fpm-alpine
