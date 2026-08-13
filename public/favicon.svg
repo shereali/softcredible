@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <title>Softcredible</title>
+  <defs>
+    <linearGradient id="sc-fav" x1="4" y1="24" x2="36" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#194A79"/>
+      <stop offset="0.55" stop-color="#25619B"/>
+      <stop offset="1" stop-color="#077BD8"/>
+    </linearGradient>
+  </defs>
+  <!-- Foundation -->
+  <rect fill="url(#sc-fav)" x="6" y="15" width="14" height="5" rx="2"/>
+  <!-- Bridge -->
+  <rect fill="url(#sc-fav)" x="10" y="10" width="14" height="5" rx="2"/>
+  <!-- Crown -->
+  <rect fill="url(#sc-fav)" x="20" y="5" width="14" height="5" rx="2"/>
+</svg>

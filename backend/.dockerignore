@@ -1,0 +1,14 @@
+vendor
+.env
+.env.production
+.env.backup
+.git
+.gitignore
+Dockerfile
+database/database.sqlite
+storage/logs/*.log
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.idea
+.vscode

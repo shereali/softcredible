@@ -1,0 +1,24 @@
+# Shared reverse proxy for ALL projects on this VPS.
+# Deploy this once to /opt/caddy/ and run `docker compose up -d`.
+# Each project's compose file exposes its services on 127.0.0.1 only;
+# Caddy routes by domain/host.
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  caddy-data:
+  caddy-config:
+
+networks:
+  default:
+    name: caddy_net

@@ -1,0 +1,16 @@
+# Docker build context excludes — heavy/generated only.
+# Source (pages/, components/, data/, nuxt.config.ts, etc.) must be included.
+node_modules
+.nuxt
+.output
+dist
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.dockerignore
+Dockerfile.frontend
+deploy

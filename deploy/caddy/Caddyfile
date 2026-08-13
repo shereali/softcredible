@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Caddyfile — routes all projects on this VPS by host.
+#
+# For the FIRST project (no domain yet), the site is served on the server IP.
+# Caddy's :80 with an IP host routes everything to this project.
+#
+# When you add a domain (and DNS points at this server), replace/add:
+#   softcredible.com, www.softcredible.com {
+#       handle /api/* { reverse_proxy softcredible-backend-1:8000 }
+#       handle        { reverse_proxy softcredible-frontend-1:3000 }
+#   }
+# Caddy then provisions Let's Encrypt TLS automatically.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# No domain yet — serve the first project on any host over HTTP.
+:80 {
+    # API → Laravel backend (php-fpm on port 8000 inside its container)
+    handle /api/* {
+        reverse_proxy softcredible-backend-1:8000
+    }
+    # Everything else → Nuxt frontend (nginx inside the container on :3000)
+    handle {
+        reverse_proxy softcredible-frontend-1:3000
+    }
+}
+
+# ── Template for additional projects (uncomment per project) ────────────────
+# project2.com, www.project2.com {
+#     reverse_proxy project2-frontend-1:3000
+# }

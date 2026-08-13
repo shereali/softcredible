@@ -1,0 +1,30 @@
+{
+  "name": "softcredible/backend",
+  "description": "Softcredible B2B Software Development - Laravel Backend API",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "laravel/framework": "^11.0",
+    "laravel/sanctum": "^4.0",
+    "spatie/laravel-permission": "^6.0",
+    "intervention/image": "^3.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.0",
+    "phpunit/phpunit": "^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Database\\": "database/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "config": {
+    "audit": {
+      "block-insecure": false
+    }
+  }
+}
