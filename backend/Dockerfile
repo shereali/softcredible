@@ -50,8 +50,10 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# nginx site config: FastCGI to php-fpm, static files served directly
-COPY docker/nginx-backend.conf /etc/nginx/conf.d/default.conf
+# nginx site config: FastCGI to php-fpm, static files served directly.
+# Alpine nginx includes http.d/*.conf inside the http block (server blocks
+# belong there, not in conf.d/ which is top-level).
+COPY docker/nginx-backend.conf /etc/nginx/http.d/default.conf
 
 # Entrypoint runs migrations before starting nginx + php-fpm
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
