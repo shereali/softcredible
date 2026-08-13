@@ -44,6 +44,7 @@ export default defineNuxtConfig({
         '/resources',
         ...getPublishedResources().map(r => `/resources/${r.slug}`),
         '/free-assessment',
+        '/estimate',
         '/contact',
         '/book-a-call',
         '/about',

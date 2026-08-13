@@ -11,17 +11,23 @@
             v-for="item in navItems"
             :key="item.href"
             :to="item.href"
-            class="text-sm font-medium text-ink-soft hover:text-ink transition-colors"
+            class="text-sm font-medium text-ink-soft hover:text-ink transition-colors py-2 inline-flex items-center"
             :class="{ 'text-ink': route.path === item.href }"
           >
             {{ item.label }}
           </NuxtLink>
         </nav>
 
-        <div class="hidden lg:flex items-center gap-4">
+        <div class="hidden lg:flex items-center gap-2">
+          <NuxtLink
+            to="/estimate"
+            class="text-sm font-medium text-ink-soft hover:text-ink transition-colors px-3 py-2 inline-flex items-center"
+          >
+            Estimate
+          </NuxtLink>
           <NuxtLink
             to="/free-assessment"
-            class="text-sm font-medium text-ink-soft hover:text-ink transition-colors"
+            class="text-sm font-medium text-ink-soft hover:text-ink transition-colors px-3 py-2 inline-flex items-center"
           >
             Free Assessment
           </NuxtLink>
@@ -75,6 +81,13 @@
               {{ item.label }}
             </NuxtLink>
             <div class="pt-4 border-t border-border space-y-3">
+              <NuxtLink
+                to="/estimate"
+                class="block text-base font-medium text-ink-soft hover:text-ink transition-colors"
+                @click="mobileMenuOpen = false"
+              >
+                Project Estimate
+              </NuxtLink>
               <NuxtLink
                 to="/free-assessment"
                 class="block text-base font-medium text-ink-soft hover:text-ink transition-colors"

@@ -2,7 +2,7 @@
   <section class="w-full bg-background section">
     <Container>
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-h2 mb-4">Build Something Similar</h2>
+        <h2 class="text-h2 mb-4">Discuss a Similar Project</h2>
         <p class="text-body-lg text-ink-soft mb-8">
           If this project looks like the kind of challenge you're facing, tell us about it. We'll help you understand what the next step should look like.
         </p>
@@ -10,8 +10,8 @@
           <Button variant="primary" size="lg" to="/contact">
             Discuss Your Project
           </Button>
-          <Button variant="outline" size="lg" to="/contact">
-            Request a Project Estimate
+          <Button variant="outline" size="lg" to="/estimate">
+            Get a Project Estimate
           </Button>
         </div>
       </div>

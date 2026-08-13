@@ -4,6 +4,8 @@
 
     <CaseStudyChallenge :challenge="caseStudy.challenge" />
 
+    <CaseStudyBeforeAfter :case-study="caseStudy" />
+
     <CaseStudyRequirements :items="caseStudy.requirements" />
 
     <CaseStudySolution

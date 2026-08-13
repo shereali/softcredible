@@ -61,7 +61,7 @@
               <div class="relative bg-surface border border-border rounded-xl shadow-lg overflow-hidden">
                 <div class="px-6 py-4 border-b border-border flex items-center justify-between">
                   <p class="text-sm font-semibold text-ink">Featured work</p>
-                  <NuxtLink to="/case-studies" class="text-sm text-accent hover:underline">
+                  <NuxtLink to="/case-studies" class="text-sm text-accent hover:underline px-2 py-1.5 inline-flex items-center">
                     View all
                   </NuxtLink>
                 </div>
@@ -212,10 +212,10 @@
       </Container>
     </section>
 
-    <!-- Case Studies -->
+    <!-- Case Studies: proof discovery -->
     <section class="w-full bg-surface border-y border-border section">
       <Container>
-        <div class="max-w-3xl mx-auto text-center mb-16">
+        <div class="max-w-3xl mx-auto text-center mb-12">
           <h2 class="text-h2 mb-4">
             Real Problems. Real Software.
           </h2>
@@ -223,7 +223,39 @@
             Explore how complex requirements can become simple, usable digital products.
           </p>
         </div>
-        <CaseStudyGrid :items="caseStudies" />
+
+        <!-- Proof-discovery filter -->
+        <div class="mb-12">
+          <p class="text-caption font-medium text-muted uppercase tracking-wider text-center mb-4">
+            I need...
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-2.5">
+            <button
+              type="button"
+              class="px-4 py-2 rounded-full border text-sm font-medium transition-all duration-200"
+              :class="activeProofFilter === 'all'
+                ? 'border-accent bg-accent-soft text-accent'
+                : 'border-border bg-surface text-ink-soft hover:border-accent/50'"
+              @click="activeProofFilter = 'all'"
+            >
+              All
+            </button>
+            <button
+              v-for="filter in proofFilters"
+              :key="filter.value"
+              type="button"
+              class="px-4 py-2 rounded-full border text-sm font-medium transition-all duration-200"
+              :class="activeProofFilter === filter.value
+                ? 'border-accent bg-accent-soft text-accent'
+                : 'border-border bg-surface text-ink-soft hover:border-accent/50'"
+              @click="activeProofFilter = filter.value"
+            >
+              {{ filter.label }}
+            </button>
+          </div>
+        </div>
+
+        <CaseStudyGrid :items="filteredCaseStudies" />
         <div class="mt-12 text-center">
           <Button variant="outline" size="lg" to="/case-studies">
             View All Case Studies
@@ -289,6 +321,83 @@
       </Container>
     </section>
 
+    <!-- Founder / human trust -->
+    <section class="w-full bg-background section">
+      <Container>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-5">
+            <div class="relative">
+              <div class="aspect-square max-w-sm bg-surface border border-border rounded-xl flex items-center justify-center">
+                <div class="text-center px-8">
+                  <p class="text-caption font-medium text-muted uppercase tracking-wider mb-3">Founder</p>
+                  <div class="w-16 h-16 mx-auto rounded-full bg-accent-soft text-accent flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <p class="text-sm text-ink font-medium mb-1">Softcredible Founder</p>
+                  <p class="text-xs text-muted">Photo and full bio coming soon</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-7">
+            <p class="text-caption font-medium text-accent uppercase tracking-wider mb-3">Who you'll work with</p>
+            <h2 class="text-h2 mb-6">
+              Software Built by People Who Care About Your Business.
+            </h2>
+            <div class="space-y-4">
+              <p class="text-body-lg text-ink-soft">
+                Softcredible exists because too many businesses get software that works in a demo but fails in practice.
+              </p>
+              <p class="text-body-lg text-ink-soft">
+                We build systems the way we'd want them built for our own company: with a clear understanding of the problem, disciplined engineering, and a relationship that outlasts the launch.
+              </p>
+              <p class="text-body-lg text-ink-soft">
+                You work directly with the people building your software, not through layers of account managers.
+              </p>
+            </div>
+            <div class="mt-8">
+              <Button variant="outline" size="lg" to="/process">
+                See How We Work
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="w-full bg-surface border-y border-border section">
+      <Container>
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <h2 class="text-h2 mb-4">
+            What Clients Say About Working With Us.
+          </h2>
+          <p class="text-body-lg text-ink-soft">
+            Real feedback from the people we've built software for.
+          </p>
+        </div>
+        <div class="max-w-xl mx-auto">
+          <Card className="p-8 text-center">
+            <div class="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-accent-soft text-accent mb-5">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" />
+              </svg>
+            </div>
+            <p class="text-body-lg text-ink-soft italic mb-6">
+              Client testimonials are being added here as they're confirmed. We only publish genuine feedback from real projects.
+            </p>
+            <p class="text-sm font-medium text-ink mb-1">Your project could be next</p>
+            <p class="text-xs text-muted mb-6">Verified client testimonials coming soon</p>
+            <Button variant="outline" size="sm" to="/case-studies">
+              See Our Work Instead
+            </Button>
+          </Card>
+        </div>
+      </Container>
+    </section>
+
     <!-- Process -->
     <section class="w-full bg-background section">
       <Container>
@@ -304,17 +413,33 @@
       </Container>
     </section>
 
-    <!-- Long-term Partnership -->
+    <!-- Long-term Partnership: lifecycle -->
     <section class="w-full bg-surface border-y border-border section">
       <Container>
         <div class="max-w-3xl mx-auto text-center mb-16">
           <h2 class="text-h2 mb-4">
-            Need More Than a One-Time Project?
+            Don't Just Build a Project. Build a Technology Partnership.
           </h2>
           <p class="text-body-lg text-ink-soft">
             Your software will evolve as your business evolves. Work with a technology partner who already understands your system.
           </p>
         </div>
+
+        <!-- Lifecycle -->
+        <div class="max-w-4xl mx-auto mb-16">
+          <ol class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <li v-for="(phase, index) in partnershipLifecycle" :key="phase.title" class="relative">
+              <div class="bg-background border border-border rounded-xl p-5 h-full">
+                <p class="text-caption font-mono text-accent mb-2">{{ String(index + 1).padStart(2, '0') }}</p>
+                <p class="text-sm font-semibold text-ink">{{ phase.title }}</p>
+              </div>
+              <svg v-if="index < partnershipLifecycle.length - 1" class="hidden lg:block w-4 h-4 text-muted absolute top-1/2 -right-4 -translate-y-1/2 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+          </ol>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card v-for="partnership in partnerships" :key="partnership.title" className="p-6 h-full flex flex-col">
             <h3 class="text-h4 mb-2">{{ partnership.title }}</h3>
@@ -323,6 +448,28 @@
               Learn More
             </Button>
           </Card>
+        </div>
+      </Container>
+    </section>
+
+    <!-- Risk reduction -->
+    <section class="w-full bg-background section">
+      <Container>
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <h2 class="text-h2 mb-4">
+            Before We Build, We Make Sure We Understand.
+          </h2>
+          <p class="text-body-lg text-ink-soft">
+            A clear process reduces both financial and technical risk.
+          </p>
+        </div>
+        <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div v-for="step in riskReduction" :key="step" class="flex items-center gap-3 px-5 py-4 bg-surface border border-border rounded-lg">
+            <svg class="w-5 h-5 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-sm font-medium text-ink">{{ step }}</span>
+          </div>
         </div>
       </Container>
     </section>
@@ -341,8 +488,8 @@
             <Button variant="primary" size="lg" to="/book-a-call">
               Book a Free Strategy Call
             </Button>
-            <Button variant="outline" size="lg" to="/contact">
-              Tell Us About Your Project
+            <Button variant="outline" size="lg" to="/estimate">
+              Get a Project Estimate
             </Button>
           </div>
         </div>
@@ -365,6 +512,33 @@ const heroProjects = [
 ]
 
 const trustBadges = ['Laravel', 'Vue', 'Nuxt', 'PHP', 'MySQL', 'TypeScript', 'Tailwind', 'Docker', 'REST APIs', 'AI Integrations']
+
+// Proof-discovery filter: "I need..." → relevant case studies.
+const activeProofFilter = ref('all')
+const proofFilters = [
+  { label: 'SaaS', value: 'saas' },
+  { label: 'CRM', value: 'crm' },
+  { label: 'ERP', value: 'erp' },
+  { label: 'eCommerce', value: 'ecommerce' },
+  { label: 'POS', value: 'pos' },
+  { label: 'Automation', value: 'automation' },
+  { label: 'Existing Software', value: 'existing' }
+]
+// Map each filter to matching slugs among the published case studies.
+const proofFilterSlugs: Record<string, string[]> = {
+  saas: [],
+  crm: [],
+  erp: ['enterprise-inventory-erp'],
+  ecommerce: ['retail-ecommerce-platform'],
+  pos: [],
+  automation: ['healthcare-patient-management'],
+  existing: ['enterprise-inventory-erp', 'healthcare-patient-management']
+}
+const filteredCaseStudies = computed(() => {
+  if (activeProofFilter.value === 'all') return caseStudies
+  const slugs = proofFilterSlugs[activeProofFilter.value] || []
+  return caseStudies.filter(cs => slugs.includes(cs.slug))
+})
 
 useSeo().setMeta({
   title: 'We Build Software That Moves Businesses Forward',
@@ -539,6 +713,26 @@ const processSteps = [
   { id: 'test', title: 'Test', description: 'Validate functionality, performance, security, and usability.' },
   { id: 'launch', title: 'Launch', description: 'Deploy the product and monitor the production environment.' },
   { id: 'grow', title: 'Grow', description: 'Improve, optimize, automate, and add new capabilities over time.' }
+]
+
+const partnershipLifecycle = [
+  { title: 'Discover' },
+  { title: 'Build' },
+  { title: 'Launch' },
+  { title: 'Improve' },
+  { title: 'Scale' },
+  { title: 'Support' }
+]
+
+const riskReduction = [
+  'Discovery',
+  'Scope',
+  'Planning',
+  'Architecture',
+  'Milestones',
+  'Development',
+  'QA',
+  'Launch'
 ]
 
 const partnerships = [

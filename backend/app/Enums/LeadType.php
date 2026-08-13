@@ -11,6 +11,7 @@ namespace App\Enums;
  * - booking     → /book-a-call form
  * - partnership → /solutions/development-partnership form
  * - resource    → /resources/[slug] download form
+ * - estimate    → /estimate project estimate form
  */
 enum LeadType: string
 {
@@ -19,6 +20,7 @@ enum LeadType: string
     case Booking = 'booking';
     case Partnership = 'partnership';
     case Resource = 'resource';
+    case Estimate = 'estimate';
 
     /**
      * Human-readable label used in notifications and admin views.
@@ -31,6 +33,7 @@ enum LeadType: string
             self::Booking => 'Strategy Call Booking',
             self::Partnership => 'Development Partnership',
             self::Resource => 'Resource Download',
+            self::Estimate => 'Project Estimate',
         };
     }
 

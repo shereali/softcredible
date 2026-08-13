@@ -25,6 +25,7 @@ export default defineEventHandler(() => {
     url('/resources', 'weekly', 0.9),
     ...getPublishedResources().map(r => url(`/resources/${r.slug}`, 'monthly', 0.8)),
     url('/free-assessment', 'monthly', 0.7),
+    url('/estimate', 'monthly', 0.7),
     url('/contact', 'monthly', 0.7),
     url('/book-a-call', 'monthly', 0.7),
     url('/about', 'monthly', 0.6),
