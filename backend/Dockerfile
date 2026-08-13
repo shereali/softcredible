@@ -5,10 +5,11 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Composer deps stage ─────────────────────────────────────────────────────
-# Use PHP 8.2 CLI (same minor as the runtime image) so Composer resolves
-# dependencies against the PHP version that will actually run them.
-FROM php:8.2-cli-alpine AS vendor
+# PHP 8.4 CLI — the lockfile was generated on PHP 8.4 (symfony 8.x requires
+# >=8.4.1), so resolve dependencies against the runtime's PHP version.
+FROM php:8.4-cli-alpine AS vendor
 RUN apk add --no-cache curl git unzip \
+    && docker-php-ext-install pdo pdo_mysql \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 WORKDIR /app
 COPY composer.json composer.lock ./
@@ -16,7 +17,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --optimize-autoloader
 
 # ── Runtime stage ────────────────────────────────────────────────────────────
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # System deps + PHP extensions (pdo_mysql required for the MySQL driver)
 RUN apk add --no-cache \
