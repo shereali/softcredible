@@ -9,6 +9,7 @@ Deployment infrastructure for the Softcredible site.
 - `.env.example` — template for secrets (copy to `.env`, never commit)
 - `deploy/caddy/` — shared Caddy reverse proxy config (one per VPS)
 - **`deploy/SERVER-SETUP.md` — the complete from-scratch server setup guide** (Docker install, deploy layout, first deploy, Caddy, releases, troubleshooting, known issues)
+- **`deploy/DOMAIN-SSL-GUIDE.md` — domain, HTTPS & cert-renewal guide** (DNS records, Caddy TLS, the renewal cron, verification commands)
 
 ## Quick reference
 

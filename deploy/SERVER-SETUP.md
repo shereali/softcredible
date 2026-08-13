@@ -152,6 +152,9 @@ While no domain is set, the site serves on the server IP over HTTP via Caddy's
 3. Reload Caddy: `docker compose -f /opt/caddy/docker-compose.caddy.yml restart`
 4. Caddy provisions Let's Encrypt TLS automatically.
 
+> **Full detail:** see **`deploy/DOMAIN-SSL-GUIDE.md`** — DNS records, cert
+> verification, the auto-renewal cron, and troubleshooting.
+
 ---
 
 ## 8. Troubleshooting
