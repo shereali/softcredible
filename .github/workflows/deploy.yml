@@ -5,11 +5,13 @@
 # Actions → New repository secret):
 #   VPS_HOST        — server IP or hostname (e.g. 217.216.110.233)
 #   VPS_USER        — SSH user (e.g. root)
-#   VPS_SSH_KEY     — private key that can log into the server
+#   VPS_SSH_KEY     — SINGLE-LINE base64 of the private key. Generate with:
+#                       ssh root@<host> "base64 -w0 /root/.ssh/github_actions"
+#                     (base64 is used because multi-line secrets get mangled)
 #
-# The deploy runs detached on the server (nohup) because the first build can
+# The deploy runs detached on the server (setsid nohup) because the build can
 # take 10+ minutes — longer than a synchronous SSH session reliably survives.
-# The workflow then polls the deploy status file until the build finishes.
+# The workflow then polls a sentinel file until the deploy finishes.
 # ─────────────────────────────────────────────────────────────────────────────
 name: Deploy to VPS
 
@@ -28,32 +30,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up SSH
+      - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          # Strip ALL whitespace from the secret before decoding — this is
-          # immune to pasted line-wraps, spaces, or stray tabs.
+          # Strip ALL whitespace (immune to pasted line-wraps) then decode.
           echo "${{ secrets.VPS_SSH_KEY }}" | tr -d '[:space:]' | base64 -d > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          echo "decoded bytes: $(wc -c < ~/.ssh/id_ed25519)"
-          echo "--- test connect ---"
-          ssh -i ~/.ssh/id_ed25519 \
-              -o StrictHostKeyChecking=accept-new \
-              -o ConnectTimeout=15 \
-              -o BatchMode=yes \
-              "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" "echo CONNECT_OK" 2>&1 || echo "CONNECT_FAILED"
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Start deploy (detached on server)
         run: |
-          echo "--- key fingerprint ---"
-          ssh-keygen -lf ~/.ssh/id_ed25519
-          echo "--- connecting ---"
-          ssh -v -i ~/.ssh/id_ed25519 \
+          ssh -i ~/.ssh/id_ed25519 \
               -o StrictHostKeyChecking=accept-new \
               -o ConnectTimeout=20 \
               -o BatchMode=yes \
-              -o HostKeyAlgorithms=ssh-ed25519 \
               "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
               "rm -f /var/log/softcredible/deploy.done; setsid nohup bash /opt/deploy/softcredible/deploy/deploy.sh </dev/null >/dev/null 2>&1 & echo started; exit 0"
 
