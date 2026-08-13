@@ -14,12 +14,16 @@
           <p class="text-body-lg text-ink-soft max-w-xl">
             Self-serve starters built the way we build client projects. Buy once, use immediately. For anything custom, talk to us about a tailored build.
           </p>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8">
+            <Button variant="primary" size="lg" href="#store-grid">Browse Tools</Button>
+            <Button variant="outline" size="lg" to="/estimate">Need Something Custom?</Button>
+          </div>
         </div>
       </Container>
     </section>
 
     <!-- Category filter -->
-    <section class="w-full bg-surface border-y border-border section">
+    <section id="store-grid" class="w-full bg-surface border-y border-border section">
       <Container>
         <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
           <div class="flex flex-wrap gap-2">

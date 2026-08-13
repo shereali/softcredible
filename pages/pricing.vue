@@ -95,8 +95,8 @@
                     <p class="text-sm text-ink-soft mt-2 max-w-md">{{ estimateNote }}</p>
                   </div>
                   <div class="flex flex-col gap-2">
-                    <Button variant="primary" size="lg" to="/book-a-call">Book a Free Strategy Call</Button>
-                    <Button variant="outline" size="md" to="/estimate">Get a Detailed Estimate</Button>
+                    <Button variant="primary" size="lg" to="/estimate">Check Your Project Range</Button>
+                    <Button variant="outline" size="md" to="/book-a-call">Talk It Through on a Call</Button>
                   </div>
                 </div>
               </div>

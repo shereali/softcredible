@@ -36,6 +36,12 @@
               <span class="w-1 h-1 rounded-full bg-accent" aria-hidden="true"></span>
               Custom Software · SaaS · Business Automation · Long-Term Engineering
             </p>
+            <p class="text-xs text-ink-soft mt-2 flex items-center gap-1.5 font-medium">
+              <svg class="w-3.5 h-3.5 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              {{ heroCredibilityLine }}
+            </p>
 
             <!-- Proof of work -->
             <div class="mt-10 pt-8 border-t border-border">
@@ -255,14 +261,14 @@
 
         <CaseStudyGrid :items="filteredCaseStudies" />
         <div class="mt-12 text-center">
-          <Button variant="outline" size="lg" to="/case-studies">
-            View All Case Studies
+          <Button variant="outline" size="lg" to="/book-a-call">
+            See How We'd Approach Your Project
           </Button>
         </div>
       </Container>
     </section>
 
-    <!-- Product Showcase -->
+    <!-- Product Showcase: interactive demo explorer -->
     <section class="w-full bg-background section">
       <Container>
         <div class="max-w-3xl mx-auto text-center mb-16">
@@ -270,27 +276,10 @@
             Don't Just Read About Our Work. Explore It.
           </h2>
           <p class="text-body-lg text-ink-soft">
-            Interactive product demonstrations built to show what's possible.
+            Interactive walkthroughs of the systems we've built. Switch between projects and modules to see how each one works.
           </p>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card v-for="demo in productDemos" :key="demo.title" interactive className="overflow-hidden h-full flex flex-col">
-            <div class="aspect-video bg-steel-100 overflow-hidden">
-              <div class="w-full h-full bg-gradient-to-br from-brand-100 to-accent-soft flex items-center justify-center">
-                <svg class="w-16 h-16 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" :d="demo.icon" />
-                </svg>
-              </div>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-              <h3 class="text-h4 mb-2">{{ demo.title }}</h3>
-              <p class="text-sm text-ink-soft leading-relaxed flex-grow">{{ demo.description }}</p>
-              <Button variant="outline" size="sm" class="mt-4">
-                Request a Similar Solution
-              </Button>
-            </div>
-          </Card>
-        </div>
+        <InteractiveDemoExplorer />
       </Container>
     </section>
 
@@ -360,6 +349,22 @@
                 See How We Work
               </Button>
             </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- Proof band: bold stat callout -->
+    <section class="w-full bg-primary section" aria-label="Project proof">
+      <Container>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+          <div v-for="item in proofBand" :key="item.label" class="text-center md:text-left">
+            <p class="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2">
+              {{ item.emphasis }}
+            </p>
+            <p class="text-sm text-white/70">
+              {{ item.label }}
+            </p>
           </div>
         </div>
       </Container>
@@ -606,6 +611,13 @@ const heroProjects = [
 
 const trustBadges = ['Laravel', 'Vue', 'Nuxt', 'PHP', 'MySQL', 'TypeScript', 'Tailwind', 'Docker', 'REST APIs', 'AI Integrations']
 
+// Honest credibility cue — derived from the actual published case studies.
+const heroCredibilityLine = computed(() => {
+  const published = caseStudies.filter(cs => cs.published)
+  const industries = [...new Set(published.map(cs => cs.industry))].join(', ').toLowerCase()
+  return `${published.length} real projects across ${industries} — built and delivered end to end.`
+})
+
 // Proof-discovery filter: "I need..." → relevant case studies.
 const activeProofFilter = ref('all')
 const proofFilters = [
@@ -639,6 +651,18 @@ const proofStudies = [
   { slug: 'retail-ecommerce-platform', industry: 'eCommerce', title: 'RetailPlus', outcomes: ['Resilient at peak traffic', 'One inventory view across stores', 'Self-service order tracking'] },
   { slug: 'enterprise-inventory-erp', industry: 'ERP', title: 'Swift Logistics', outcomes: ['Connected operations on one foundation', 'Auditable purchasing trail', 'Real-time stock visibility'] }
 ] as const
+
+// Honest proof band — counts derived from the published case-study data.
+const proofBand = computed(() => {
+  const published = caseStudies.filter(cs => cs.published)
+  const industries = [...new Set(published.map(cs => cs.industry))]
+  const outcomes = published.reduce((n, cs) => n + (cs.outcome?.length ?? 0), 0)
+  return [
+    { emphasis: String(published.length), label: published.length === 1 ? 'project delivered end to end' : 'projects delivered end to end' },
+    { emphasis: String(industries.length), label: industries.length === 1 ? 'industry served' : 'industries served' },
+    { emphasis: String(outcomes), label: 'verified outcomes, no invented numbers' }
+  ]
+})
 
 useSeo().setMeta({
   title: 'We Build Software That Moves Businesses Forward',
@@ -750,24 +774,6 @@ const outcomes = [
   {
     title: 'Improve',
     description: 'Make workflows faster, clearer, and easier to manage every day.',
-    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-  }
-]
-
-const productDemos = [
-  {
-    title: 'CRM Dashboard',
-    description: 'Customer relationship management with pipeline tracking, contact management, and reporting.',
-    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-  },
-  {
-    title: 'SaaS Dashboard',
-    description: 'Multi-tenant SaaS platform with subscription management, usage analytics, and admin controls.',
-    icon: 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z'
-  },
-  {
-    title: 'Business Analytics',
-    description: 'Real-time dashboards with custom reports, data visualization, and KPI tracking.',
     icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
   }
 ]

@@ -26,8 +26,8 @@
             Ask us directly. No sales script, just a straight answer about whether we can help.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary" size="lg" to="/contact">Ask a Question</Button>
-            <Button variant="outline" size="lg" to="/book-a-call">Book a Free Strategy Call</Button>
+            <Button variant="primary" size="lg" to="/contact">Still Have Questions? Talk to Us</Button>
+            <Button variant="outline" size="lg" to="/book-a-call">Or Book a Free Strategy Call</Button>
           </div>
         </div>
       </Container>
