@@ -1,0 +1,45 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Auto-deploy: push to main → SSH to VPS → git reset + docker compose rebuild
+#
+# Required GitHub repository secrets (Settings → Secrets and variables →
+# Actions → New repository secret):
+#   VPS_HOST        — server IP or hostname (e.g. 217.216.110.233)
+#   VPS_USER        — SSH user (e.g. root)
+#   VPS_SSH_KEY     — private key that can log into the server
+# ─────────────────────────────────────────────────────────────────────────────
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allow manual trigger from the Actions tab
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Deploy via SSH
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+              -o StrictHostKeyChecking=accept-new \
+              -o ConnectTimeout=20 \
+              "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+              "bash /opt/deploy/softcredible/deploy/deploy.sh"
+
+      - name: Smoke check
+        run: |
+          curl -sS -o /dev/null -w "homepage: HTTP %{http_code}\n" \
+            "http://${{ secrets.VPS_HOST }}/" || true

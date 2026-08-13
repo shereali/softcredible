@@ -10,6 +10,9 @@ Deployment infrastructure for the Softcredible site.
 - `deploy/caddy/` — shared Caddy reverse proxy config (one per VPS)
 - **`deploy/SERVER-SETUP.md` — the complete from-scratch server setup guide** (Docker install, deploy layout, first deploy, Caddy, releases, troubleshooting, known issues)
 - **`deploy/DOMAIN-SSL-GUIDE.md` — domain, HTTPS & cert-renewal guide** (DNS records, Caddy TLS, the renewal cron, verification commands)
+- **`deploy/GITHUB-ACTIONS-GUIDE.md` — auto-deploy guide** (workflow, required repo secrets, deploy script, monitoring, troubleshooting)
+- `.github/workflows/deploy.yml` — auto-deploy on push to `main`
+- `deploy/deploy.sh` — server-side deploy script
 
 ## Quick reference
 
