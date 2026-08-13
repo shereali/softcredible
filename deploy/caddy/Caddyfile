@@ -1,24 +1,40 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Caddyfile — routes all projects on this VPS by host.
 #
-# For the FIRST project (no domain yet), the site is served on the server IP.
-# Caddy's :80 with an IP host routes everything to this project.
-#
-# When you add a domain (and DNS points at this server), replace/add:
-#   softcredible.com, www.softcredible.com {
-#       handle /api/* { reverse_proxy softcredible-backend-1:8000 }
-#       handle        { reverse_proxy softcredible-frontend-1:3000 }
-#   }
-# Caddy then provisions Let's Encrypt TLS automatically.
+# softcredible.com: serves the Softcredible project. Caddy obtains Let's
+# Encrypt TLS automatically once the A record points here.
+# :80 fallback: serves the project on the raw IP over HTTP (works even before
+# DNS propagates; keep until the domain is confirmed).
 # ─────────────────────────────────────────────────────────────────────────────
 
-# No domain yet — serve the first project on any host over HTTP.
-:80 {
-    # API → Laravel backend (php-fpm on port 8000 inside its container)
+softcredible.com, www.softcredible.com {
+    encode gzip
+
+    # API → Laravel backend (nginx in the backend container on :8000)
     handle /api/* {
         reverse_proxy softcredible-backend-1:8000
     }
-    # Everything else → Nuxt frontend (nginx inside the container on :3000)
+
+    # Everything else → Nuxt frontend (Node server in the frontend container)
+    handle {
+        reverse_proxy softcredible-frontend-1:3000
+    }
+
+    # Headers
+    header {
+        -Server
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+    }
+}
+
+# No domain yet — serve the first project on any host over HTTP.
+# Remove this block once the domain + TLS are confirmed working.
+:80 {
+    handle /api/* {
+        reverse_proxy softcredible-backend-1:8000
+    }
     handle {
         reverse_proxy softcredible-frontend-1:3000
     }
