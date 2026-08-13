@@ -6,6 +6,10 @@
 #   VPS_HOST        — server IP or hostname (e.g. 217.216.110.233)
 #   VPS_USER        — SSH user (e.g. root)
 #   VPS_SSH_KEY     — private key that can log into the server
+#
+# The deploy runs detached on the server (nohup) because the first build can
+# take 10+ minutes — longer than a synchronous SSH session reliably survives.
+# The workflow then polls the deploy status file until the build finishes.
 # ─────────────────────────────────────────────────────────────────────────────
 name: Deploy to VPS
 
@@ -18,7 +22,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
       - name: Checkout
@@ -31,13 +35,38 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
-      - name: Deploy via SSH
+      - name: Start deploy (detached on server)
         run: |
           ssh -i ~/.ssh/id_ed25519 \
               -o StrictHostKeyChecking=accept-new \
               -o ConnectTimeout=20 \
               "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-              "bash /opt/deploy/softcredible/deploy/deploy.sh"
+              "rm -f /var/log/softcredible/deploy.done; nohup bash /opt/deploy/softcredible/deploy/deploy.sh >/dev/null 2>&1 & echo 'deploy started'"
+
+      - name: Wait for deploy to finish
+        run: |
+          for i in $(seq 1 60); do
+            RESULT=$(ssh -i ~/.ssh/id_ed25519 \
+                -o StrictHostKeyChecking=accept-new \
+                "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+                "cat /var/log/softcredible/deploy.done 2>/dev/null || echo WAITING")
+            if [ "$RESULT" = "done" ]; then
+              echo "Deploy finished."
+              break
+            fi
+            if [ "$i" -eq 60 ]; then
+              echo "Timed out waiting for deploy" >&2
+              exit 1
+            fi
+            sleep 15
+          done
+
+      - name: Show deploy result
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+              -o StrictHostKeyChecking=accept-new \
+              "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+              "cat /var/log/softcredible/deploy.status"
 
       - name: Smoke check
         run: |
