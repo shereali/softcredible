@@ -57,11 +57,15 @@ already in `/root/.ssh/authorized_keys`).
 access to the server):
 
 ```bash
-# Local (Linux/macOS):
-scp root@217.216.110.233:/root/.ssh/github_actions ~/github_actions
+# Local (Linux/macOS) — print to terminal:
+ssh root@217.216.110.233 "cat /root/.ssh/github_actions"
 
-# Or on Windows PowerShell:
-scp root@217.216.110.233:/root/.ssh/github_actions .
+# Local — save to a local file:
+scp root@217.216.110.233:/root/.ssh/github_actions ~/github_actions
+scp root@217.216.110.233:/root/.ssh/github_actions .   # Windows cmd
+
+# On the server itself:
+cat /root/.ssh/github_actions
 ```
 
 Then paste the **entire file contents** (starting with `-----BEGIN OPENSSH PRIVATE KEY-----`) into the `VPS_SSH_KEY` secret value.
