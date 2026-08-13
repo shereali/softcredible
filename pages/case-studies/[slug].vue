@@ -25,6 +25,32 @@
 
     <CaseStudyOutcome :items="caseStudy.outcome" />
 
+    <!-- Verified transformation + pull-quote (renders only when real data exists) -->
+    <section v-if="caseStudy.transformation || caseStudy.pullQuote" class="w-full bg-background section">
+      <Container>
+        <div class="max-w-4xl mx-auto">
+          <div v-if="caseStudy.transformation" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface border border-border rounded-xl p-6">
+              <p class="text-caption font-medium text-muted uppercase tracking-wider mb-2">Before</p>
+              <p class="text-body-lg text-ink-soft">{{ caseStudy.transformation.before }}</p>
+            </div>
+            <div class="bg-surface border border-accent/30 rounded-xl p-6">
+              <p class="text-caption font-medium text-accent uppercase tracking-wider mb-2">After</p>
+              <p class="text-body-lg text-ink-soft">{{ caseStudy.transformation.after }}</p>
+              <p v-if="caseStudy.transformation.metric" class="text-h2 text-accent mt-3">{{ caseStudy.transformation.metric }}</p>
+            </div>
+          </div>
+          <blockquote v-if="caseStudy.pullQuote" class="mt-10 bg-surface border border-border rounded-xl p-8 text-center">
+            <svg class="w-8 h-8 mx-auto text-accent mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" />
+            </svg>
+            <p class="text-body-lg text-ink italic">“{{ caseStudy.pullQuote }}”</p>
+            <p v-if="caseStudy.clientRole" class="text-sm font-medium text-ink mt-4">{{ caseStudy.clientRole }}</p>
+          </blockquote>
+        </div>
+      </Container>
+    </section>
+
     <CaseStudyTechnology :items="caseStudy.technologies" />
 
     <!-- Development -->

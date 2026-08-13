@@ -104,22 +104,16 @@
       </Container>
     </section>
 
-    <!-- Trust Strip -->
+    <!-- Trust Strip: condensed proof band under hero -->
     <section class="w-full bg-surface border-y border-border">
       <Container>
-        <div class="py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div class="lg:col-span-4">
-            <p class="text-h4 text-ink mb-1">
-              Built for Businesses That Take Technology Seriously.
-            </p>
-            <p class="text-sm text-muted">
-              Technology we work with, on every project.
-            </p>
-          </div>
-          <div class="lg:col-span-8">
-            <div class="flex flex-wrap items-center gap-2.5">
-              <TrustBadge v-for="badge in trustBadges" :key="badge" :label="badge" />
-            </div>
+        <div class="py-8 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <p class="text-sm font-medium text-ink flex items-center gap-2 flex-shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+            Built for Businesses That Take Technology Seriously.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <TrustBadge v-for="badge in trustBadges" :key="badge" :label="badge" />
           </div>
         </div>
       </Container>
@@ -333,14 +327,14 @@
             <div class="relative">
               <div class="aspect-square max-w-sm bg-surface border border-border rounded-xl flex items-center justify-center">
                 <div class="text-center px-8">
-                  <p class="text-caption font-medium text-muted uppercase tracking-wider mb-3">Founder</p>
+                  <p class="text-caption font-medium text-muted uppercase tracking-wider mb-3">Founder-led</p>
                   <div class="w-16 h-16 mx-auto rounded-full bg-accent-soft text-accent flex items-center justify-center mb-4">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
                   <p class="text-sm text-ink font-medium mb-1">Softcredible Founder</p>
-                  <p class="text-xs text-muted">Photo and full bio coming soon</p>
+                  <p class="text-xs text-muted">Built around a simple idea: software should remove complexity, not add it.</p>
                 </div>
               </div>
             </div>
@@ -371,33 +365,41 @@
       </Container>
     </section>
 
-    <!-- Testimonials -->
+    <!-- Proof: quantified outcomes -->
     <section class="w-full bg-surface border-y border-border section">
       <Container>
         <div class="max-w-3xl mx-auto text-center mb-16">
           <h2 class="text-h2 mb-4">
-            What Clients Say About Working With Us.
+            What Our Work Delivers.
           </h2>
           <p class="text-body-lg text-ink-soft">
-            Real feedback from the people we've built software for.
+            Verified outcomes from real projects. No invented numbers.
           </p>
         </div>
-        <div class="max-w-xl mx-auto">
-          <Card className="p-8 text-center">
-            <div class="w-12 h-12 mx-auto flex items-center justify-center rounded-full bg-accent-soft text-accent mb-5">
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <NuxtLink
+            v-for="study in proofStudies"
+            :key="study.slug"
+            :to="`/case-studies/${study.slug}`"
+            class="group block bg-background border border-border rounded-xl p-8 hover:border-accent/50 hover:shadow-md transition-all duration-200"
+          >
+            <p class="text-caption font-medium text-accent uppercase tracking-wider mb-3">{{ study.industry }}</p>
+            <h3 class="text-h4 mb-2 group-hover:text-accent transition-colors">{{ study.title }}</h3>
+            <ul class="space-y-2 mt-4">
+              <li v-for="outcome in study.outcomes" :key="outcome" class="flex items-start gap-2 text-sm text-ink-soft">
+                <svg class="w-4 h-4 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {{ outcome }}
+              </li>
+            </ul>
+            <span class="inline-flex items-center gap-1 text-sm font-medium text-accent mt-5 group-hover:gap-2 transition-all">
+              View case study
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
-            </div>
-            <p class="text-body-lg text-ink-soft italic mb-6">
-              Client testimonials are being added here as they're confirmed. We only publish genuine feedback from real projects.
-            </p>
-            <p class="text-sm font-medium text-ink mb-1">Your project could be next</p>
-            <p class="text-xs text-muted mb-6">Verified client testimonials coming soon</p>
-            <Button variant="outline" size="sm" to="/case-studies">
-              See Our Work Instead
-            </Button>
-          </Card>
+            </span>
+          </NuxtLink>
         </div>
       </Container>
     </section>
@@ -543,6 +545,13 @@ const filteredCaseStudies = computed(() => {
   const slugs = proofFilterSlugs[activeProofFilter.value] || []
   return caseStudies.filter(cs => slugs.includes(cs.slug))
 })
+
+// Proof strip: real, qualitative outcomes from the published case studies.
+const proofStudies = [
+  { slug: 'healthcare-patient-management', industry: 'Healthcare', title: 'MediCare Network', outcomes: ['One source of truth across clinics', 'Faster reporting on demand', 'Clearer role-based access'] },
+  { slug: 'retail-ecommerce-platform', industry: 'eCommerce', title: 'RetailPlus', outcomes: ['Resilient at peak traffic', 'One inventory view across stores', 'Self-service order tracking'] },
+  { slug: 'enterprise-inventory-erp', industry: 'ERP', title: 'Swift Logistics', outcomes: ['Connected operations on one foundation', 'Auditable purchasing trail', 'Real-time stock visibility'] }
+] as const
 
 useSeo().setMeta({
   title: 'We Build Software That Moves Businesses Forward',

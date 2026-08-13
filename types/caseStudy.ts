@@ -27,6 +27,14 @@ export interface CaseStudyOutcome {
   description?: string
 }
 
+/** Verified before→after metric or qualitative transformation, when available. */
+export interface CaseStudyTransformation {
+  before: string
+  after: string
+  /** Set only when the metric is verified and sourced. */
+  metric?: string
+}
+
 export interface CaseStudy {
   slug: string
   title: string
@@ -60,6 +68,12 @@ export interface CaseStudy {
   }
   /** Section 9 — verified outcomes only. */
   outcome: CaseStudyOutcome[]
+  /** Optional verified before→after transformation (Step 4). Renders only when populated. */
+  transformation?: CaseStudyTransformation
+  /** Optional client role/industry context for the pull-quote (Step 4). */
+  clientRole?: string
+  /** Optional verified pull-quote. Never fabricate. */
+  pullQuote?: string
   /** Section 10 — technology stack. */
   technologies: string[]
   /** Internal links to /solutions/{slug}. */
