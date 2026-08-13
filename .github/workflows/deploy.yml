@@ -31,7 +31,9 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          # Normalize the secret: strip CR (Windows paste artifacts) and
+          # ensure the key ends with exactly one LF. OpenSSH keys reject CRLF.
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           # Validate the key parses — fails loudly if the secret is mangled
           ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null
