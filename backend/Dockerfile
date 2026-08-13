@@ -34,8 +34,16 @@ WORKDIR /var/www/html
 # App code
 COPY . .
 
-# Vendor from the composer stage (already optimized autoload)
+# Vendor from the composer stage
 COPY --from=vendor /app/vendor ./vendor
+
+# Composer binary from the vendor stage
+COPY --from=vendor /usr/local/bin/composer /usr/local/bin/composer
+
+# Regenerate the autoloader now that app code is present, so PSR-4 classes
+# (App\*, Database\Seeders\*) are discoverable — the vendor-stage autoloader
+# was built from an empty app dir.
+RUN composer dump-autoload --no-dev --optimize --classmap-authoritative 2>/dev/null || true
 
 # Laravel storage + bootstrap caches
 RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache \
