@@ -15,7 +15,7 @@ git push origin main
 GitHub Actions (workflow: .github/workflows/deploy.yml)
       │  (uses repo secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY)
       ▼
-SSH to VPS → run /opt/deploy/softcredible/deploy/deploy.sh
+SSH to VPS → run /var/www/softcredible/deploy/deploy.sh
       │  (git fetch + reset --hard origin/main, docker compose up -d --build)
       ▼
 Smoke check: curl the homepage on the server IP
@@ -89,9 +89,9 @@ git push origin main
 
 ## What the workflow runs (for reference)
 
-### `deploy.sh` (on the server, at `/opt/deploy/softcredible/deploy/deploy.sh`)
+### `deploy.sh` (on the server, at `/var/www/softcredible/deploy/deploy.sh`)
 ```sh
-cd /opt/deploy/softcredible
+cd /var/www/softcredible
 git fetch origin main
 git reset --hard origin/main
 docker compose up -d --build
@@ -112,7 +112,7 @@ curl -sS -o /dev/null -w "homepage: HTTP %{http_code}\n" "http://<VPS_HOST>/"
 tail -f /var/log/softcredible/deploy.log
 
 # Container status after deploy
-docker compose -f /opt/deploy/softcredible/docker-compose.yml ps
+docker compose -f /var/www/softcredible/docker-compose.yml ps
 ```
 
 The deploy log records each run with a UTC timestamp, the git fetch/reset
@@ -124,10 +124,10 @@ output, the compose build output, and the final container statuses.
 
 - **Caddy config** (`/opt/caddy/Caddyfile`) — changed manually, then:
   ```bash
-  cp /opt/deploy/softcredible/deploy/caddy/Caddyfile /opt/caddy/
+  cp /var/www/softcredible/deploy/caddy/Caddyfile /opt/caddy/
   cd /opt/caddy && docker compose -f docker-compose.caddy.yml restart
   ```
-- **Server secrets** (`/opt/deploy/softcredible/.env`) — never in git, changed by
+- **Server secrets** (`/var/www/softcredible/.env`) — never in git, changed by
   editing the file on the server directly.
 - **Database schema** — the backend entrypoint runs `migrate --force` on every
   container start, so schema changes from a new push are applied automatically.
@@ -167,6 +167,6 @@ systemctl restart sshd
 | Get deploy key locally | `scp root@217.216.110.233:/root/.ssh/github_actions .` |
 | Trigger deploy | `git push origin main` (or Actions → Run workflow) |
 | Tail deploy log | `tail -f /var/log/softcredible/deploy.log` |
-| Check containers | `docker compose -f /opt/deploy/softcredible/docker-compose.yml ps` |
+| Check containers | `docker compose -f /var/www/softcredible/docker-compose.yml ps` |
 | Redeploy Caddy config | `cp deploy/caddy/Caddyfile /opt/caddy/ && cd /opt/caddy && docker compose -f docker-compose.caddy.yml restart` |
 | Rotate deploy key | Delete key line in `/root/.ssh/authorized_keys`, remove secret, regenerate |

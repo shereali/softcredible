@@ -63,7 +63,7 @@ Routing rules:
 
 ### Deploy a Caddyfile change
 ```bash
-cd /opt/deploy/softcredible && git pull -q origin main   # get latest Caddyfile
+cd /var/www/softcredible && git pull -q origin main   # get latest Caddyfile
 cp deploy/caddy/Caddyfile /opt/caddy/
 cd /opt/caddy && docker compose -f docker-compose.caddy.yml restart
 ```

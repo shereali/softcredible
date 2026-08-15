@@ -25,7 +25,7 @@ docker compose up -d --build
 
 ### Release deploy (server)
 ```bash
-cd /opt/deploy/softcredible
+cd /var/www/softcredible
 git pull
 docker compose up -d --build
 ```

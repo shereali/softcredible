@@ -4,7 +4,7 @@ KEY="/c/Users/kakkhopath/AppData/Local/Temp/commandcode/ec9261b9-2572-4626-beed-
 echo "--- runner-equivalent: start deploy ---"
 ssh -i "$KEY" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=20 \
     root@217.216.110.233 \
-    "rm -f /var/log/softcredible/deploy.done; setsid nohup bash /opt/deploy/softcredible/deploy/deploy.sh </dev/null >/dev/null 2>&1 & echo started; exit 0"
+    "rm -f /var/log/softcredible/deploy.done; setsid nohup bash /var/www/softcredible/deploy/deploy.sh </dev/null >/dev/null 2>&1 & echo started; exit 0"
 echo "START_STEP_EXIT=$?"
 echo "--- runner-equivalent: wait/poll ---"
 for i in $(seq 1 12); do

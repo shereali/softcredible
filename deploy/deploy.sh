@@ -9,7 +9,7 @@
 
 set -e
 
-DEPLOY_DIR="/opt/deploy/softcredible"
+DEPLOY_DIR="/var/www/softcredible"
 LOG_DIR="/var/log/softcredible"
 LOG_FILE="$LOG_DIR/deploy.log"
 SENTINEL="$LOG_DIR/deploy.done"

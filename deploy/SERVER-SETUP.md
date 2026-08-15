@@ -56,13 +56,13 @@ One shared Caddy reverse proxy routes every project by host. Each project is
 isolated in its own directory + Docker network.
 
 ```
-/opt/deploy/softcredible/     ← project 1 (compose, Dockerfiles, .env)
+/var/www/softcredible/     ← project 1 (compose, Dockerfiles, .env)
 /opt/deploy/<other-project>/  ← future projects (same pattern)
 /opt/caddy/                   ← shared Caddy (once per VPS)
 ```
 
 ```bash
-mkdir -p /opt/deploy/softcredible /opt/caddy
+mkdir -p /var/www/softcredible /opt/caddy
 ```
 
 ---
@@ -105,8 +105,8 @@ start, so the schema and admin user are always current.
 ## 5. Shared Caddy reverse proxy
 
 ```bash
-cp /opt/deploy/softcredible/deploy/caddy/docker-compose.caddy.yml /opt/caddy/
-cp /opt/deploy/softcredible/deploy/caddy/Caddyfile /opt/caddy/
+cp /var/www/softcredible/deploy/caddy/docker-compose.caddy.yml /opt/caddy/
+cp /var/www/softcredible/deploy/caddy/Caddyfile /opt/caddy/
 cd /opt/caddy
 docker compose -f docker-compose.caddy.yml up -d
 ```
@@ -129,7 +129,7 @@ docker network inspect caddy_net
 ## 6. Deploy a new release
 
 ```bash
-cd /opt/deploy/softcredible
+cd /var/www/softcredible
 git pull
 docker compose up -d --build
 ```
@@ -203,7 +203,7 @@ in the repo — this list explains what happened and why:
 ## 9. Credentials & secrets (NOT in git)
 
 Everything sensitive lives on the server only:
-- `/opt/deploy/softcredible/.env` (chmod 600):
+- `/var/www/softcredible/.env` (chmod 600):
   `DB_PASSWORD`, `DB_ROOT_PASSWORD`, `APP_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`
 - Admin login: `ADMIN_EMAIL` / `ADMIN_PASSWORD` from that file
 - Never commit `.env` — both `.gitignore` files already exclude it
